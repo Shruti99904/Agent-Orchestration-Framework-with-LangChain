@@ -147,7 +147,7 @@ def main():
     print("Type 'exit' to quit.\n")
 
     print("Some ideas to try:")
-    print("- Greet Amit in a friendly way.")
+    print("- Greet in a friendly way.")
     print("- Use the weather tool to get the temperature in Silchar.")
     print("- Explain binary search in simple words.")
 
