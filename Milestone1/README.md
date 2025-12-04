@@ -1,27 +1,94 @@
-# 🌟 LangChain + Google Gemini — Milestone 1
+🚀 LangChain Environment Setup & Basic Agent Creation
 
-This is a small, beginner-friendly project where I experimented with **LangChain** using **Google Gemini** as the LLM.  
-The goal of this milestone is just to understand the basics — nothing too fancy — but enough to get comfortable with how LangChain works.
+This README provides step-by-step instructions for setting up a complete LangChain development environment, creating your first conversational agent, and building a console interface to interact with it.
 
-In this first milestone, I built:
+📌 Module: Environment Setup & Basic Agent Creation
+🎯 Objective
 
-- ✔️ A simple explanation demo using **PromptTemplate + LLMChain**
-- ✔️ Two basic tools (a greeting tool and a weather tool)
-- ✔️ A **Zero-Shot ReAct Agent** that decides when to use these tools
-- ✔️ A small **console REPL** so I can chat with the agent directly
+Set up the development environment, understand core LangChain components, and build a foundational agent capable of handling simple interactions.
 
-> ⚠️ **Note:**  
-This project still uses the older “classic” LangChain APIs like `LLMChain`, `initialize_agent`, and `ConversationBufferMemory`.  
-They’re easy to learn but raise some deprecation warnings — which is fine for this milestone.  
-In Milestone-2, I’ll move to the newer LangChain v1 patterns (Runnables, Agents v2, etc.).
+✅ Environment & Setup Tasks
+1. Set up Python + LangChain environment
 
----
+Install Python (3.10+ recommended)
 
-## 🚀 Features
+Create and activate a virtual environment
 
-- Explain any topic in simple words using a prompt + LLM
-- A friendly greeting tool
-- A lightweight weather tool (using the free `wttr.in` API)
-- A Zero-Shot ReAct agent that automatically picks the right tool
-- Memory support using `ConversationBufferMemory`
-- A simple console interface to interact with the agent
+Install LangChain and required libraries
+
+Configure .env for API keys (Gemini / OpenAI / etc.)
+
+2. Explore LangChain Core Components
+
+LLMs — Language model wrappers (Gemini, GPT, etc.)
+
+Prompts — Templates for instructing the model
+
+Chains — Sequential workflow steps
+
+Agents — LLM-driven decision-making systems
+
+3. Connect to a Language Model
+
+Load Gemini/OpenAI using environment variables
+
+Test API connectivity using a sample script
+
+4. Build a Simple Agent
+
+Create a basic script to answer static or predefined queries
+
+Verify response generation using the model
+
+✅ Agent Development Tasks
+1. Experiment with Agent Types
+
+Examples include:
+
+zero-shot-react-description
+
+chat-zero-shot-react
+
+structured-chat-zero-shot-react
+
+2. Create Prompt Templates
+
+Use PromptTemplate to guide model behavior and structure responses.
+
+3. Implement Basic Input / Output Logic
+
+Write Python functions that:
+
+Accept user input
+
+Process it using the agent
+
+Return model outputs
+
+4. Create a Console Interface
+
+Build a CLI-based interface allowing interactive testing of the agent.
+
+🏁 Final Output / Deliverables
+
+By the end, you will have:
+
+✔ 1. Fully Functional LangChain Environment
+
+Python + LangChain installed
+
+API keys configured correctly
+
+✔ 2. Basic Agent Prototype
+
+Responds to simple queries
+
+Uses prompt templates
+
+Works with Gemini or GPT
+
+✔ 3. Console-Based Interface
+
+User types questions
+
+Agent responds in real time
