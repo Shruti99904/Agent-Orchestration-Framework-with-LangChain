@@ -1,53 +1,129 @@
 import os
-from pydantic import BaseModel, Field
-from langchain.tools import tool
-from langchain.agents import create_agent
-from langchain_core.messages import HumanMessage
-from langchain_openai import ChatOpenAI  # ONLY OpenAI!
-# FREE KEY: https://platform.openai.com/api-keys → "Create new secret key"
-OPENAI_API_KEY = "YOUR_KEY_HERE"  
-os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+import random
+from dotenv import load_dotenv
 
-print(f"🔑 {'✅ OK' if OPENAI_API_KEY.startswith('sk-proj') else '❌ ADD KEY'}")
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.tools import Tool
+from langchain.agents import initialize_agent, AgentType
 
-# TOOL 1: Calculator
-@tool
-def calculator(expression: str) -> str:
-    """Math calculator for numbers: 2+2, 15/3, 5*4."""
+
+# =====================================================
+# LOAD ENV
+# =====================================================
+load_dotenv()
+api_key = os.getenv("AIzaSyAgmqnYB77zUGNkS4OqQMiTToBF_CwKLzc")
+
+# =====================================================
+# TOOLS
+# =====================================================
+
+# -------- WEATHER TOOL --------
+def mock_weather_api(location: str) -> str:
     try:
-        result = eval(expression, {"__builtins__": {}})
-        return f"✅ {expression} = {result}"
+        conditions = ["Sunny", "Rainy", "Cloudy", "Windy", "Stormy"]
+        temp = random.randint(20, 38)
+        cond = random.choice(conditions)
+        return f"Weather in {location.title()}: {cond}, {temp}°C"
     except:
-        return f"❌ Bad math: {expression}. Try 2+2"
+        return "Weather API error."
 
-# TOOL 2: Weather
-class WeatherInput(BaseModel):
-    city: str = Field(description="City name")
+# -------- DICTIONARY TOOL --------
+mock_dictionary = {
+    "computer": "An electronic device used for computation.",
+    "network": "A group of connected devices that communicate.",
+    "protocol": "A set of rules governing data communication.",
+    "ai": "Artificial Intelligence, machine-simulated intelligence."
+}
 
-@tool(args_schema=WeatherInput)
-def get_weather(city: str) -> str:
-    """Current weather for any city."""
-    data = {
-        "London": "14°C cloudy", "New York": "22°C sunny",
-        "Tokyo": "18°C rainy", "Paris": "16°C partly cloudy"
-    }
-    return f"🌤️ {city}: {data.get(city.title(), '20°C sunny')}"
+def dictionary_lookup(word: str) -> str:
+    try:
+        return mock_dictionary.get(word.lower(), "Word not found in dictionary.")
+    except:
+        return "Dictionary lookup error."
 
-# OPENAI MODEL
-model = ChatOpenAI(model="gpt-4o-mini", temperature=0)
-
-print("✅ READY!")
-
-agent = create_agent(
-    model, [calculator, get_weather],
-    system_prompt="Use calculator for math, get_weather for weather."
+# =====================================================
+# LLM
+# =====================================================
+llm = ChatGoogleGenerativeAI(
+    model="models/gemini-flash-lite-latest",
+    temperature=0.2,
+    api_key=api_key
 )
 
-print("\n🚀 MILESTONE 2 ✅\n")
+# =====================================================
+# TOOLS REGISTRATION
+# =====================================================
+tools = [
+    Tool(
+        name="weather_api",
+        func=mock_weather_api,
+        description="Get weather information for a location"
+    ),
+    Tool(
+        name="dictionary",
+        func=dictionary_lookup,
+        description="Get meaning of a word"
+    )
+]
 
-# TESTS
-print("1️⃣ MATH:", agent.invoke({"messages": [HumanMessage(content="25*4/5+10")]}]["messages"][-1].content)
-print("2️⃣ WEATHER:", agent.invoke({"messages": [HumanMessage(content="Tokyo weather")]})["messages"][-1].content)
-print("3️⃣ COMBO:", agent.invoke({"messages": [HumanMessage(content="NYC vs London temps")]})["messages"][-1].content)
+# =====================================================
+# PROMPT
+# =====================================================
+prompt = PromptTemplate(
+    input_variables=["input", "tools", "tool_names", "agent_scratchpad"],
+    template="""
+You are a helpful AI agent.
 
-print("\n🎉 ALL PASS!")
+TOOLS:
+{tools}
+Tool names: {tool_names}
+
+RULES:
+- Weather → weather_api
+- Word meaning → dictionary
+- NEVER create your own questions
+- NEVER loop
+- If a tool cannot answer, say so clearly
+
+Question: {input}
+
+Thought: what do I need?
+Action: <tool name if needed>
+Action Input: <input>
+Observation: <tool result>
+Final Answer: <answer>
+
+{agent_scratchpad}
+"""
+)
+
+# =====================================================
+# AGENT
+# =====================================================
+agent_executor = initialize_agent(
+    tools=tools,
+    llm=llm,
+    agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+    verbose=True,
+    handle_parsing_errors=True
+)
+
+
+# =====================================================
+# MAIN LOOP
+# =====================================================
+print("\nLangChain Agent Ready")
+print("Type 'exit' to stop.\n")
+
+while True:
+    user_input = input("You: ")
+
+    if user_input.lower() == "exit":
+        print("Agent: Goodbye!")
+        break
+
+    try:
+        response = agent_executor.invoke({"input": user_input})
+        print("Agent:", response["output"], "\n")
+    except Exception as e:
+        print("Agent Error:", e, "\n")
