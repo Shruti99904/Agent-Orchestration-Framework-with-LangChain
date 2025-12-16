@@ -1,23 +1,15 @@
-import os
+print(">>> Agent script started")
 import random
+import os
 from dotenv import load_dotenv
 
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_core.tools import Tool
-from langchain.agents import initialize_agent, AgentType
+from langchain.agents import create_react_agent, AgentExecutor
+from langchain.tools import Tool
+from langchain.prompts import PromptTemplate
 
 
-# =====================================================
-# LOAD ENV
-# =====================================================
-load_dotenv()
-api_key = os.getenv("AIzaSyAgmqnYB77zUGNkS4OqQMiTToBF_CwKLzc")
-
-# =====================================================
-# TOOLS
-# =====================================================
-
-# -------- WEATHER TOOL --------
+# ================== WEATHER TOOL ==================
 def mock_weather_api(location: str) -> str:
     try:
         conditions = ["Sunny", "Rainy", "Cloudy", "Windy", "Stormy"]
@@ -27,7 +19,8 @@ def mock_weather_api(location: str) -> str:
     except:
         return "Weather API error."
 
-# -------- DICTIONARY TOOL --------
+
+# ================== DICTIONARY TOOL ==================
 mock_dictionary = {
     "computer": "An electronic device used for computation.",
     "network": "A group of connected devices that communicate.",
@@ -41,18 +34,21 @@ def dictionary_lookup(word: str) -> str:
     except:
         return "Dictionary lookup error."
 
-# =====================================================
-# LLM
-# =====================================================
+
+# ================== LOAD API KEY ==================
+load_dotenv()
+api_key = os.getenv("GOOGLE_API_KEY")
+
+
+# ================== LLM ==================
 llm = ChatGoogleGenerativeAI(
     model="models/gemini-flash-lite-latest",
     temperature=0.2,
     api_key=api_key
 )
 
-# =====================================================
-# TOOLS REGISTRATION
-# =====================================================
+
+# ================== TOOLS ==================
 tools = [
     Tool(
         name="weather_api",
@@ -66,9 +62,8 @@ tools = [
     )
 ]
 
-# =====================================================
-# PROMPT
-# =====================================================
+
+# ================== PROMPT ==================
 prompt = PromptTemplate(
     input_variables=["input", "tools", "tool_names", "agent_scratchpad"],
     template="""
@@ -97,33 +92,31 @@ Final Answer: <answer>
 """
 )
 
-# =====================================================
-# AGENT
-# =====================================================
-agent_executor = initialize_agent(
+
+# ================== AGENT ==================
+agent = create_react_agent(llm, tools, prompt)
+
+agent_executor = AgentExecutor(
+    agent=agent,
     tools=tools,
-    llm=llm,
-    agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
     verbose=True,
     handle_parsing_errors=True
 )
 
 
-# =====================================================
-# MAIN LOOP
-# =====================================================
-print("\nLangChain Agent Ready")
+# ================== MAIN LOOP ==================
+print("\n✅ LangChain Agent Ready")
 print("Type 'exit' to stop.\n")
 
 while True:
-    user_input = input("You: ")
+    try:
+        user_input = input("You: ")
+    except EOFError:
+        break
 
-    if user_input.lower() == "exit":
+    if user_input.strip().lower() == "exit":
         print("Agent: Goodbye!")
         break
 
-    try:
-        response = agent_executor.invoke({"input": user_input})
-        print("Agent:", response["output"], "\n")
-    except Exception as e:
-        print("Agent Error:", e, "\n")
+    response = agent_executor.invoke({"input": user_input})
+    print("Agent:", response["output"], "\n")
