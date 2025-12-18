@@ -1,8 +1,10 @@
+# ------------------------------
+# LangChain Agent using OpenAI GPT-3.5
+# ------------------------------
+
 import os
 import requests
 from dotenv import load_dotenv
-
-from langchain_google_genai import ChatGoogleGenerativeAI
 
 from langchain_classic.prompts import PromptTemplate
 from langchain_classic.chains import LLMChain
@@ -10,30 +12,30 @@ from langchain_classic.tools import Tool
 from langchain_classic.agents import initialize_agent, AgentType
 from langchain_classic.memory import ConversationBufferMemory
 
-# Load API key from .env
+# ------------------------------
+# Load API key from .env if exists
+# ------------------------------
 load_dotenv()
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+if not OPENAI_API_KEY:
+    raise RuntimeError("OPENAI_API_KEY is missing. Set it in .env or environment variables.")
 
+# ------------------------------
+# Use OpenAI GPT-3.5 as LLM
+# ------------------------------
+from langchain.chat_models import ChatOpenAI
 
 def get_llm():
-    api_key = os.getenv("GOOGLE_API_KEY")
-    if not api_key:
-        raise RuntimeError(
-            "GOOGLE_API_KEY is missing. Put it in your .env file first."
-        )
-
-    llm = ChatGoogleGenerativeAI(
-        model="gemini-2.0-flash",
-        google_api_key=api_key,
+    return ChatOpenAI(
+        model_name="gpt-3.5-turbo",
         temperature=0.3,
+        openai_api_key=OPENAI_API_KEY
     )
-    return llm
 
-
-# Basic PromptTemplate + LLMChain
+# ------------------------------
+# LLMChain for explaining topics
+# ------------------------------
 def build_explain_chain(llm):
-    """
-    This chain explains any topic in simple language.
-    """
     prompt = PromptTemplate(
         input_variables=["topic"],
         template=(
@@ -43,26 +45,15 @@ def build_explain_chain(llm):
             "Topic: {topic}\n"
         ),
     )
+    return LLMChain(llm=llm, prompt=prompt, verbose=False)
 
-    chain = LLMChain(
-        llm=llm,
-        prompt=prompt,
-        verbose=False,
-    )
-    return chain
-
-
-# Tools (greeting + weather)
+# ------------------------------
+# Tools
+# ------------------------------
 def greet(name: str) -> str:
-    """Simple greeting tool."""
-    return f"Hello {name}, I am your LangChain + Gemini agent!"
-
+    return f"Hello {name}, I am your LangChain + GPT agent!"
 
 def get_weather(city: str) -> str:
-    """
-    Simple weather tool using wttr.in free API.
-    Only current temperature in Celsius.
-    """
     try:
         url = f"https://wttr.in/{city}?format=j1"
         response = requests.get(url, timeout=10)
@@ -70,10 +61,8 @@ def get_weather(city: str) -> str:
         temp_c = data["current_condition"][0]["temp_C"]
         return f"Current temperature in {city} is {temp_c}°C."
     except Exception as e:
-        return f"Sorry, I could not get weather for {city}. Error: {e}"
+        return f"Sorry, could not get weather for {city}. Error: {e}"
 
-
-# Wrap Python functions into LangChain Tools
 greet_tool = Tool(
     name="greeting_tool",
     func=greet,
@@ -88,16 +77,19 @@ weather_tool = Tool(
 
 tools = [greet_tool, weather_tool]
 
-# Memory (short-term chat history)
+# ------------------------------
+# Memory for agent
+# ------------------------------
 memory = ConversationBufferMemory(
     memory_key="chat_history",
     return_messages=True,
 )
 
-# Agent creation (Zero-shot ReAct)
+# ------------------------------
+# Create agent
+# ------------------------------
 def create_agent(agent_type: AgentType = AgentType.ZERO_SHOT_REACT_DESCRIPTION):
     llm = get_llm()
-
     agent = initialize_agent(
         tools=tools,
         llm=llm,
@@ -107,55 +99,47 @@ def create_agent(agent_type: AgentType = AgentType.ZERO_SHOT_REACT_DESCRIPTION):
     )
     return agent
 
-
-# Console interface (main program)
+# ------------------------------
+# Main program
+# ------------------------------
 def main():
     llm = get_llm()
     explain_chain = build_explain_chain(llm)
 
-    print("Simple LLMChain Demo (Gemini) ")
+    # Demo: Explain a topic
     demo_topic = "What is artificial intelligence?"
-
-    # Invoke the chain and print the result
     answer = explain_chain.invoke({"topic": demo_topic})
     if isinstance(answer, dict) and "text" in answer:
         output = answer["text"]
     else:
-        output = answer  # fallback if chain returns a string
+        output = answer
 
+    print("=== LLMChain Demo ===")
     print(f"Topic: {demo_topic}")
     print("Answer:")
     print(output)
+    print("=====================")
 
-    print("===================================================")
-
-    print("\nNow starting the interactive Gemini agent...")
+    # Interactive agent
     agent = create_agent(agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION)
-    print("Agent is ready!")
-    print("Type 'exit' to quit.\n")
-
-    print("Some ideas to try:")
-    print("- Greet in a friendly way.")
-    print("- Use the weather tool to get the temperature in Silchar.")
-    print("- Explain binary search in simple words.")
+    print("\n=== GPT Agent Ready ===")
+    print("Type your messages. Type 'exit' to quit.\n")
 
     while True:
-        user_input = input("\nYou: ").strip()
+        user_input = input("You: ").strip()
         if user_input.lower() in ("exit", "quit"):
             print("Agent: Bye! See you later.")
             break
-
         if not user_input:
             continue
 
         try:
             response = agent.run(user_input)
         except Exception as e:
-            response = f"Sorry, something went wrong: {e}"
-
+            response = f"Error: {e}"
         print("Agent:", response)
 
-
-# Correct main check
-if __name__ == "__main__":
-    main()
+# ------------------------------
+# Run the program
+# ------------------------------
+main()
