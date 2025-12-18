@@ -10,21 +10,17 @@ from langchain_classic.tools import Tool
 from langchain_classic.agents import initialize_agent, AgentType
 from langchain_classic.memory import ConversationBufferMemory
 
-
 # Load API key from .env
-
 load_dotenv()
 
 
 def get_llm():
-   
     api_key = os.getenv("GOOGLE_API_KEY")
     if not api_key:
         raise RuntimeError(
             "GOOGLE_API_KEY is missing. Put it in your .env file first."
         )
 
-    
     llm = ChatGoogleGenerativeAI(
         model="gemini-2.0-flash",
         google_api_key=api_key,
@@ -33,9 +29,7 @@ def get_llm():
     return llm
 
 
-
 # Basic PromptTemplate + LLMChain
-
 def build_explain_chain(llm):
     """
     This chain explains any topic in simple language.
@@ -58,13 +52,9 @@ def build_explain_chain(llm):
     return chain
 
 
-
 # Tools (greeting + weather)
-
 def greet(name: str) -> str:
-    """
-    Simple greeting tool.
-    """
+    """Simple greeting tool."""
     return f"Hello {name}, I am your LangChain + Gemini agent!"
 
 
@@ -98,20 +88,14 @@ weather_tool = Tool(
 
 tools = [greet_tool, weather_tool]
 
-
-
 # Memory (short-term chat history)
-
 memory = ConversationBufferMemory(
     memory_key="chat_history",
     return_messages=True,
 )
 
-
 # Agent creation (Zero-shot ReAct)
-
 def create_agent(agent_type: AgentType = AgentType.ZERO_SHOT_REACT_DESCRIPTION):
-   
     llm = get_llm()
 
     agent = initialize_agent(
@@ -125,19 +109,23 @@ def create_agent(agent_type: AgentType = AgentType.ZERO_SHOT_REACT_DESCRIPTION):
 
 
 # Console interface (main program)
-
 def main():
-    
     llm = get_llm()
     explain_chain = build_explain_chain(llm)
 
     print("Simple LLMChain Demo (Gemini) ")
     demo_topic = "What is artificial intelligence?"
-   
+
+    # Invoke the chain and print the result
     answer = explain_chain.invoke({"topic": demo_topic})
+    if isinstance(answer, dict) and "text" in answer:
+        output = answer["text"]
+    else:
+        output = answer  # fallback if chain returns a string
+
     print(f"Topic: {demo_topic}")
     print("Answer:")
-    print(answer["text"])
+    print(output)
 
     print("===================================================")
 
@@ -158,7 +146,7 @@ def main():
             break
 
         if not user_input:
-            continue 
+            continue
 
         try:
             response = agent.run(user_input)
@@ -168,5 +156,6 @@ def main():
         print("Agent:", response)
 
 
-if _name_ == "_main_":
+# Correct main check
+if __name__ == "__main__":
     main()
