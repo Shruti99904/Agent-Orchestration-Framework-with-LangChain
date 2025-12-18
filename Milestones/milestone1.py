@@ -4,11 +4,11 @@ from dotenv import load_dotenv
 
 from langchain_google_genai import ChatGoogleGenerativeAI
 
-from langchain_classic.prompts import PromptTemplate
-from langchain_classic.chains import LLMChain
-from langchain_classic.tools import Tool
-from langchain_classic.agents import initialize_agent, AgentType
-from langchain_classic.memory import ConversationBufferMemory
+from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
+from langchain.tools import Tool
+from langchain.agents import initialize_agent, AgentType
+from langchain.memory import ConversationBufferMemory
 
 
 # Load API key from .env
