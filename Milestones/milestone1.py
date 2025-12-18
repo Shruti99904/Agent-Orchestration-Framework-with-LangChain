@@ -5,7 +5,6 @@ from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 from langchain_core.prompts import PromptTemplate
-from langchain.chains import LLMChain
 from langchain.tools import Tool
 from langchain.agents import initialize_agent, AgentType
 from langchain.memory import ConversationBufferMemory
@@ -35,26 +34,9 @@ def get_llm():
 
 # Basic PromptTemplate + LLMChain
 
-def build_explain_chain(llm):
-    """
-    This chain explains any topic in simple language.
-    """
-    prompt = PromptTemplate(
-        input_variables=["topic"],
-        template=(
-            "You are a friendly teacher.\n"
-            "Explain the topic below in very simple words so that a beginner "
-            "can understand.\n\n"
-            "Topic: {topic}\n"
-        ),
-    )
+answer = explain_chain.invoke({"topic": demo_topic})
+print(answer.content)
 
-    chain = LLMChain(
-        llm=llm,
-        prompt=prompt,
-        verbose=False,
-    )
-    return chain
 
 
 
