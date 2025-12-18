@@ -1,7 +1,7 @@
 print(">>> Agent script started")
 import random
 import os
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.agents import create_react_agent, AgentExecutor
