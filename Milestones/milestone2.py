@@ -1,26 +1,20 @@
-print(">>> Agent script started")
-import random
 import os
-#from dotenv import load_dotenv
+import random
+from dotenv import load_dotenv
 
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.agents import create_react_agent, AgentExecutor
 from langchain.tools import Tool
 from langchain.prompts import PromptTemplate
 
-
-# ================== WEATHER TOOL ==================
+# ================== 1. TOOLS ==================
 def mock_weather_api(location: str) -> str:
-    try:
-        conditions = ["Sunny", "Rainy", "Cloudy", "Windy", "Stormy"]
-        temp = random.randint(20, 38)
-        cond = random.choice(conditions)
-        return f"Weather in {location.title()}: {cond}, {temp}°C"
-    except:
-        return "Weather API error."
+    """Returns fake weather data."""
+    conditions = ["Sunny", "Rainy", "Cloudy", "Windy", "Stormy"]
+    temp = random.randint(20, 38)
+    cond = random.choice(conditions)
+    return f"Weather in {location.title()}: {cond}, {temp}°C"
 
-
-# ================== DICTIONARY TOOL ==================
 mock_dictionary = {
     "computer": "An electronic device used for computation.",
     "network": "A group of connected devices that communicate.",
@@ -29,94 +23,81 @@ mock_dictionary = {
 }
 
 def dictionary_lookup(word: str) -> str:
-    try:
-        return mock_dictionary.get(word.lower(), "Word not found in dictionary.")
-    except:
-        return "Dictionary lookup error."
+    """Looks up words in a local dictionary."""
+    return mock_dictionary.get(word.lower().strip(), "Word not found in dictionary.")
 
-
-# ================== LOAD API KEY ==================
-load_dotenv()
-api_key = os.getenv("GOOGLE_API_KEY")
-
-
-# ================== LLM ==================
-llm = ChatGoogleGenerativeAI(
-    model="models/gemini-flash-lite-latest",
-    temperature=0.2,
-    api_key=api_key
-)
-
-
-# ================== TOOLS ==================
+# Wrap functions in LangChain Tools
 tools = [
     Tool(
         name="weather_api",
         func=mock_weather_api,
-        description="Get weather information for a location"
+        description="Useful for when you need to answer questions about the weather in a specific city."
     ),
     Tool(
         name="dictionary",
         func=dictionary_lookup,
-        description="Get meaning of a word"
+        description="Useful for when you need to find the meaning of a word."
     )
 ]
 
+# ================== 2. LLM & PROMPT ==================
+load_dotenv()
+api_key = os.getenv("GOOGLE_API_KEY")
 
-# ================== PROMPT ==================
-prompt = PromptTemplate(
-    input_variables=["input", "tools", "tool_names", "agent_scratchpad"],
-    template="""
-You are a helpful AI agent.
-
-TOOLS:
-{tools}
-Tool names: {tool_names}
-
-RULES:
-- Weather → weather_api
-- Word meaning → dictionary
-- NEVER create your own questions
-- NEVER loop
-- If a tool cannot answer, say so clearly
-
-Question: {input}
-
-Thought: what do I need?
-Action: <tool name if needed>
-Action Input: <input>
-Observation: <tool result>
-Final Answer: <answer>
-
-{agent_scratchpad}
-"""
+llm = ChatGoogleGenerativeAI(
+    model="gemini-1.5-flash", 
+    temperature=0, 
+    google_api_key=api_key
 )
 
+# Robust ReAct Prompt Template
+template = """Answer the following questions as best you can. You have access to the following tools:
 
-# ================== AGENT ==================
+{tools}
+
+Use the following format:
+
+Question: the input question you must answer
+Thought: you should always think about what to do
+Action: the action to take, should be one of [{tool_names}]
+Action Input: the input to the action
+Observation: the result of the action
+... (this Thought/Action/Action Input/Observation can repeat N times)
+Thought: I now know the final answer
+Final Answer: the final answer to the original input question
+
+Begin!
+
+Question: {input}
+Thought: {agent_scratchpad}"""
+
+prompt = PromptTemplate.from_template(template)
+
+# ================== 3. INITIALIZE AGENT ==================
 agent = create_react_agent(llm, tools, prompt)
 
 agent_executor = AgentExecutor(
     agent=agent,
     tools=tools,
-    verbose=True,
-    handle_parsing_errors=True
+    verbose=True, # Set to True to see the "Thinking" process
+    handle_parsing_errors=True,
+    max_iterations=5
 )
 
+# ================== 4. EXECUTION ==================
+if __name__ == "__main__":
+    print("\n✅ LangChain Agent Ready")
+    print("Type 'exit' to stop.\n")
 
-# ================== MAIN LOOP ==================
-print("\n✅ LangChain Agent Ready")
-print("Type 'exit' to stop.\n")
-
-while True:
-    try:
-        user_input = input("You: ")
-    except EOFError:
-        break
-
-    if user_input.strip().lower() == "exit":
-        print("Agent: Goodbye!")
-        break
-
-    response = agent_executor.invoke({"input": user_input})
-    print("Agent:", response["output"], "\n")
+    while True:
+        try:
+            user_input = input("You: ")
+            if user_input.strip().lower() == "exit":
+                print("Agent: Goodbye!")
+                break
+            
+            response = agent_executor.invoke({"input": user_input})
+            print(f"\nAgent: {response['output']}\n")
+            
+        except Exception as e:
+            print(f"Error: {e}")
