@@ -3,7 +3,7 @@ import random
 from dotenv import load_dotenv
 
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.agents import create_react_agent, AgentExecutor
+from langchain.agents.react.agent import create_react_agent
 from langchain.tools import Tool
 from langchain.prompts import PromptTemplate
 
