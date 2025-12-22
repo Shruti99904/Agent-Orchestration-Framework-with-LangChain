@@ -4,8 +4,6 @@
 This project focuses on building an intelligent **multi-agent orchestration system** using LangChain.  
 The system supports planning, tool usage, memory, collaboration, and workflow automation through agents.
 
-Below is the complete overview of **all milestones**, including objectives, tasks, and final expected outputs.
-
 ---
 
 # 📍 Milestone 1 – Environment Setup & Basic Agent Creation
@@ -106,10 +104,3 @@ Expose the multi-agent workflow as an automated service with API + UI.
 - Documentation for all modules  
 
 ---
-
-This README serves as the **complete overview** of the project and all milestones.
-
-You can now add:  
-- Individual README for each milestone  
-- Code folders  
-- Images & output samples  
