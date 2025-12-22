@@ -53,13 +53,6 @@ Five custom tools were successfully implemented, significantly exceeding the min
 
 ---
 
-## 📸 Output Screenshots
-
-### **AI Response Example**
-![AI Response 2](../../public/mil2_0.png)
-
----
-
 ## 📌 Summary
 
 Milestone 2 is **fully completed** and includes:
