@@ -31,20 +31,7 @@ It includes environment setup, a basic single-agent prototype, markdown formatti
 - Clean modular Python structure  
 
 
----
-
-## 📸 Output Screenshots
-
-### **Agent Startup**
-![Agent response 1](../../public/mil1_1.png)
-
-### **AI Response Example**
-![AI Response 2](../../public/mil1_0.png)
-
-(Replace these images with your real screenshots inside `output/`)
-
----
-
+--
 ## 📌 Summary
 
 Milestone 1 is **fully completed** and includes:
