@@ -23,5 +23,10 @@ This milestone focuses on setting up the development environment and building a 
 - Implemented a simple agent using LangChain
 - Built a console interface for testing
 
-# Run the agent
-python milestone1.py
+Output
+
+Agent capable of using external tools
+
+Successful tool invocation and response handling
+
+Demonstration of agent-tool interaction
