@@ -1,106 +1,47 @@
-# Agent-Orchestration Framework using LangChain  
-### Full Project Overview (Milestones 1–4)
 
-This project focuses on building an intelligent **multi-agent orchestration system** using LangChain.  
-The system supports planning, tool usage, memory, collaboration, and workflow automation through agents.
+# Agent-Orchestration Framework with LangChain
 
----
+## Project Overview
+This project implements a multi-agent orchestration framework using LangChain. The system demonstrates how intelligent agents can collaborate, use tools, manage memory, and automate complex workflows.
 
-# 📍 Milestone 1 – Environment Setup & Basic Agent Creation
+## Project Objectives
+- Build intelligent LLM-powered agents
+- Enable tool usage and API integration
+- Implement multi-agent collaboration
+- Manage short-term and long-term memory
+- Automate real-world workflows
 
-### 🎯 Goal  
-Lay the foundation by setting up the environment and creating a simple LangChain agent.
+## Tech Stack
+- Python
+- LangChain
+- FastAPI / Flask
+- Streamlit / HTML & JavaScript
+- Vector Stores
 
-### 🔧 What was done  
-- Python + LangChain environment setup  
-- Connected Gemini model (`ChatGoogleGenerativeAI`)  
-- Implemented `PromptTemplate` + `LLMChain`  
-- Created a console-based interactive agent  
-- Added custom markdown-to-CLI color parser  
+## Project Structure
 
-### 📦 Output  
-- Functional LangChain environment  
-- Basic single-agent chat prototype  
-- Console interface for testing  
+## Milestones Summary
 
----
+### Milestone 1: Basic Agent Creation
+- LangChain environment setup
+- Single conversational agent
 
-# 📍 Milestone 2 – Tool Integration & API Calling
+### Milestone 2: Tool Integration
+- Custom tool implementation
+- Tool-aware agent reasoning
 
-### 🎯 Goal  
-Give the agent the ability to use tools and perform actions.
+### Milestone 3: Multi-Agent & Memory
+- Multiple agent roles
+- Individual and shared memory
+- Collaborative task execution
 
-### 🔧 What will be done  
-- Implement LangChain `Tool` abstraction  
-- Add at least 2 tools (e.g., Calculator, Fake Weather API)  
-- Write prompts enabling tool invocation  
-- Handle tool errors and invalid requests  
+### Milestone 4: Workflow Automation
+- End-to-end automation
+- REST API exposure
+- Frontend interaction
 
-### 📦 Expected Output  
-- Agent capable of using external tools  
-- At least two working tool integrations  
-- Verified tool-agent interaction  
+## Key Outcomes
+- Scalable multi-agent orchestration framework
+- Tool-enabled and memory-aware agents
+- Automated AI-driven workflows
 
----
-
-# 📍 Milestone 3 – Multi-Agent Orchestration & Memory Management
-
-### 🎯 Goal  
-Build multiple agents that communicate and use memory intelligently.
-
-### 🔧 What will be done  
-- Define agent roles (e.g., Researcher, Summarizer)  
-- Enable conversation between agents  
-- Add **individual memory** (ConversationBufferMemory)  
-- Add **shared memory** (VectorStoreRetrieverMemory)  
-- Orchestrate a collaborative multi-step scenario  
-
-### 📦 Expected Output  
-- Multi-agent system working together  
-- Functional memory layers (personal + shared)  
-- Collaborative task execution flow  
-
----
-
-# 📍 Milestone 4 – Complex Workflow Automation, REST API & UI
-
-### 🎯 Goal  
-Expose the multi-agent workflow as an automated service with API + UI.
-
-### 🔧 What will be done  
-- Design a real workflow  
-  - e.g., “Research → Summarize → Compose Email”  
-- Implement multi-agent orchestration logic  
-- Build a REST API using FastAPI/Flask  
-- Develop a basic frontend (HTML/JS or Streamlit)  
-- Documentation, cleanup, and testing  
-
-### 📦 Expected Output  
-- Complete automated workflow  
-- REST API endpoints for triggering flows  
-- Interactive web UI  
-- Final documentation & evaluation  
-
----
-
-# 📘 Evaluation Criteria (All Milestones)
-
-| Milestone | Requirement | Evaluation |
-|----------|-------------|------------|
-| **1** | Basic agent setup | Agent responds to prompts |
-| **2** | Tool usage | Agent successfully calls tools |
-| **3** | Multi-agent + memory | Agents collaborate using memory |
-| **4** | Complex automation | API + UI + workflow completed |
-
----
-
-# ✅ Final Deliverables of Entire Project
-
-- Multi-agent LangChain system  
-- Tool-enabled intelligent agents  
-- Memory-powered collaboration  
-- Workflow automation pipeline  
-- REST API + frontend interface  
-- Documentation for all modules  
-
----
