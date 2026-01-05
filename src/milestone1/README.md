@@ -1,43 +1,27 @@
-# Milestone 1 – Environment Setup & Basic Agent Creation
+# Milestone 1: Environment Setup & Basic Agent Creation
 
-This milestone establishes the base setup for the Agent-Orchestration Framework using **LangChain + Gemini**.  
-It includes environment setup, a basic single-agent prototype, markdown formatting, and a console-based interface.
+## 📌 Overview
+This milestone focuses on setting up the development environment and building a basic conversational agent using LangChain. The goal is to understand LangChain’s core components and create a single-agent prototype capable of responding to user queries.
 
----
+## 🎯 Objectives
+- Install and configure LangChain
+- Understand LLMs, Prompts, Chains, and Agents
+- Build a basic conversational agent
+- Create a console-based interface for interaction
 
-## 🚀 Objectives Completed
+## 🛠️ Technologies Used
+- Python 3.x
+- LangChain
+- LLM API (real or simulated)
+- Virtual Environment (venv)
 
-### Week 1
-- Set up Python environment  
-- Installed LangChain + required libraries  
-- Loaded `.env` for Gemini API key  
-- Connected to Gemini using `ChatGoogleGenerativeAI`  
-- Built initial LLM agent  
+## 📋 Tasks Completed
+- Set up Python virtual environment
+- Installed LangChain and dependencies
+- Connected the agent to a language model
+- Created prompt templates
+- Implemented a simple agent using LangChain
+- Built a console interface for testing
 
-### Week 2
-- Created `PromptTemplate`  
-- Implemented `LLMChain`  
-- Added custom markdown parser (bold + italic)  
-- Built interactive console chat interface  
-
----
-
-## Features Implemented
-
-- Gemini-powered LangChain Agent  
-- Prompt-based response system  
-- Real-time console interaction  
-- Custom markdown → Rich CLI formatting  
-- Clean modular Python structure  
-
-
---
-## 📌 Summary
-
-Milestone 1 is **fully completed** and includes:
-- Full environment setup  
-- A working LangChain + Gemini agent  
-- Console-based interaction system  
-- Markdown-enhanced output formatting  
-
----
+# Run the agent
+python milestone1.py
