@@ -1,161 +1,131 @@
-🧠 Agent Orchestration Framework with LangChain
+Agent-Orchestration Framework with LangChain
+🚀 Project Overview
+This project focuses on the development of a multi-agent orchestration framework designed to automate moderately complex, multi-step workflows. By leveraging the LangChain library, the system simulates a team of intelligent agents that collaborate toward a shared objective.
++3
 
-📌 Project Overview
+The framework is built to address cutting-edge challenges in agent-native systems, specifically how to scale LLM-powered task automation through structured coordination.
 
-The Agent Orchestration Framework with LangChain is a multi-agent system designed to simulate intelligent, collaborative agents capable of planning, reasoning, tool usage, memory management, and coordinated task execution. Built using the LangChain library, this project demonstrates how LLM-powered agent systems can automate moderately complex, multi-step workflows through structured orchestration.
-This project provides hands-on exposure to agent-native system design, focusing on scalable automation, inter-agent communication, and real-world workflow execution.
+🧠 Core Capabilities
 
-
-🎯 Project Objectives
-
-Build intelligent agents with planning and execution capabilities
-Enable collaboration between multiple LLM-powered agents
-Integrate external tools and APIs into agent workflows
-Implement short-term and long-term memory for reasoning continuity
-Automate complex workflows using orchestrated agent interactions
-Expose automation via REST APIs and a simple frontend interface
-
-🧩 Key Features
-✅ Single & Multi-Agent Architecture
-🛠 Custom Tool Integration (APIs, Simulations)
-🧠 Individual and Shared Memory Systems
-🔗 Inter-Agent Communication
-🔄 Workflow Orchestration
-🌐 REST API Integration
-💻 Optional Frontend Interface
-
-🏗️ System Architecture
-User Input
-   ↓
-Agent Orchestrator
-   ├── Research Agent
-   ├── Summarizer Agent
-   ├── Executor Agent
-   ↓
-Memory Systems (Short-term & Long-term)
-   ↓
-Tool & API Integration
-   ↓
-Final Output
+Task Planning & Execution: Agents can autonomously plan their actions and execute them using available tools.
++2
 
 
-🛠️ Technologies Used
-
-Python
-LangChain
-LLMs (Real or Simulated)
-Flask / FastAPI (REST API)
-Vector Stores for Memory
-HTML / JavaScript / Streamlit (Frontend)
+Tool Invocation: Integration of external APIs to fetch data or perform calculations.
++2
 
 
-📦 Project Modules & Milestones
-🔹 Milestone 1 (Weeks 1–2): Environment Setup & Basic Agent Creation
-Objective:
-Set up the LangChain environment and build a foundational conversational agent.
-
-Key Tasks:
-
-Python & LangChain environment setup
-Understanding LLMs, Prompts, Chains, and Agents
-Connecting to a language model
-Building a basic single-agent prototype
-Creating prompt templates
-Console-based interaction
-
-Deliverables:
-Functional LangChain setup
-Single-agent conversational system
-Interactive console interface
+Dual-Layer Memory: Management of both short-term (individual agent state) and long-term (shared knowledge) memory.
++1
 
 
-🔹 Milestone 2 (Weeks 3–4): Tool Integration & API Calling
-Objective:
-Extend agent capabilities using external tools.
+Agent Communication: Orchestrated interaction protocols allowing agents to work together rather than in isolation.
++1
 
-Key Tasks:
-Understanding LangChain Tool abstraction
-Implementing custom tools (e.g., Calculator, Weather API)
-Prompt engineering for tool usage
-Tool invocation testing and error handling
+🏗 System Architecture
+The framework is divided into modular components to ensure scalability and ease of evaluation.
 
-Deliverables:
-
-Agent with tool-usage capability
-At least two integrated tools
-Demonstrated agent-tool interaction
-
-🔹 Milestone 3 (Weeks 5–6): Multi-Agent Orchestration & Memory Management
-Objective:
-Enable collaboration between multiple agents with memory-based reasoning.
-
-Key Tasks:
-
-Defining agent roles (Researcher, Summarizer, etc.)
-Implementing inter-agent communication
-Adding individual agent memory
-Implementing shared vector-based memory
-Coordinated multi-agent task execution
-
-Deliverables:
-
-Fully functional multi-agent system
-Individual & shared memory mechanisms
-Collaborative reasoning and task completion
-
-🔹 Milestone 4 (Weeks 7–8): Complex Workflow Automation & Evaluation
-Objective:
-Automate real-world workflows and expose them via APIs and UI.
-
-Key Tasks:
-
-Designing end-to-end workflows (e.g., Research → Summarize → Email)
-Multi-agent orchestration logic
-REST API development (Flask/FastAPI)
-Frontend UI integration
-Testing, optimization, and documentation
-
-Deliverables:
-
-End-to-end automated workflow
-REST API for workflow execution
-Interactive frontend interface
-Complete project documentation
-
-🧪 Evaluation Criteria
-Milestone	Evaluation Focus
-Milestone 1	Agent setup & prompt response
-Milestone 2	Correct tool usage
-Milestone 3	Multi-agent coordination & memory
-Milestone 4	Complete workflow with API & UI
-
-📈 Learning Outcomes
+1. The Agents
+Agents are defined with specific roles such as "Research Agent" or "Summarizer Agent". Each agent is equipped with:
 
 
-Deep understanding of agent-based AI systems
-
-Practical experience with LangChain
-
-Real-world exposure to LLM orchestration
-
-API & frontend integration skills
-
-Industry-relevant system design knowledge
+Prompt Templates: Specialized instructions to guide behavior.
 
 
+I/O Logic: Standardized input/output handling for consistency.
 
-📄 Documentation
-Detailed documentation and usage instructions are provided in the respective milestone folders.
-
-👩‍💻 Author
-Shruti Nigam
-B.Tech – Electronics & Communication Engineering
-Malaviya National Institute of Technology, Jaipur
-
-⭐ Acknowledgements
+2. The Toolkit
+Agents interact with the world through a suite of integrated tools:
++1
 
 
-Infosys Springboard Internship Program
+Standard Tools: Calculators and basic data processing.
 
 
-LangChain Open-Source Community
+Custom Tools: Mocked or real APIs (e.g., Simulated Weather API) for dynamic data fetching.
+
+3. Memory & State Management
+To maintain context across complex tasks, the system implements:
+
+
+Individual Memory: Uses ConversationBufferMemory to track specific agent interactions.
+
+
+Shared Memory: Uses VectorStoreRetrieverMemory to act as a global "scratchpad" for the entire agent group.
+
+📅 Development Roadmap & Milestones
+Milestone 1: Environment & Foundational Agent (Weeks 1–2)
+
+Objective: Establish the core environment and build a single-agent prototype.
+
+Set up Python and LangChain environment.
+
+Explore core blocks: LLMs, Prompts, and Chains.
+
+
+Deliverable: A functional console-based interface for interactive testing.
+
+Milestone 2: Tool Integration (Weeks 3–4)
+
+Objective: Enable agents to perform actions beyond text generation.
+
+Implement LangChain’s Tool abstraction.
+
+Integrate at least two tools with error handling for API failures.
+
+
+Deliverable: Demonstration of an agent successfully invoking external logic.
+
+Milestone 3: Multi-Agent Orchestration (Weeks 5–6)
+
+Objective: Enable agent collaboration and reasoning.
+
+Define agent roles and communication channels.
+
+Implement individual and shared memory layers.
+
+
+Deliverable: A collaborative system where memory updates guide future decision-making.
+
+Milestone 4: Full Workflow & Deployment (Weeks 7–8)
+
+Objective: Automate a real-world multi-step task.
+
+Design a "Research → Summarize → Compose Email" workflow.
+
+Build a REST API using Flask or FastAPI.
+
+Create a Frontend UI (Streamlit or HTML/JS).
+
+
+Deliverable: A complete, production-ready system with full documentation.
+
+📊 Evaluation Criteria
+The project is evaluated based on the functional success of each milestone:
+
+
+M1: Agent responds accurately to prompt-based queries.
+
+
+M2: Agent correctly triggers tools via LangChain toolkit.
+
+
+M3: Agents communicate and utilize shared memory for task execution.
+
+
+M4: Entire workflow is triggerable via API and visible in the UI.
+
+🛠 Tech Stack
+Framework: LangChain 
+
+
+Language: Python 
+
+
+API: Flask or FastAPI 
+
+
+Frontend: Streamlit / HTML / JS 
+
+
+Storage: Vector Databases (for shared memory)
