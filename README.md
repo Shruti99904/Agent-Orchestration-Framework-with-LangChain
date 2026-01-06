@@ -1,4 +1,4 @@
-Agent Orchestration Framework with LangChain
+🧠 Agent Orchestration Framework with LangChain
 📌 Project Overview
 
 The Agent Orchestration Framework with LangChain is a multi-agent system designed to simulate intelligent, collaborative agents capable of planning, reasoning, tool usage, memory management, and coordinated task execution. Built using the LangChain library, this project demonstrates how LLM-powered agent systems can automate moderately complex, multi-step workflows through structured orchestration.
@@ -91,6 +91,7 @@ Single-agent conversational system
 
 Interactive console interface
 
+
 🔹 Milestone 2 (Weeks 3–4): Tool Integration & API Calling
 
 Objective:
@@ -116,6 +117,7 @@ Demonstrated agent-tool interaction
 
 🔹 Milestone 3 (Weeks 5–6): Multi-Agent Orchestration & Memory Management
 
+
 Objective:
 Enable collaboration between multiple agents with memory-based reasoning.
 
@@ -140,6 +142,7 @@ Individual & shared memory mechanisms
 Collaborative reasoning and task completion
 
 🔹 Milestone 4 (Weeks 7–8): Complex Workflow Automation & Evaluation
+
 
 Objective:
 Automate real-world workflows and expose them via APIs and UI.
